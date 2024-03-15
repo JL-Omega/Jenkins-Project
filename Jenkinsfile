@@ -34,6 +34,7 @@ pipeline {
         stage("deploy-app") {
             echo 'Deploy'
             echo 'Good'
+            echo 'bien'
         }
     }
 }
