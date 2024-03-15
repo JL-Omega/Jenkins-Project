@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     environment {
         IMAGE_NAME        = 'protem'
@@ -11,14 +11,12 @@ pipeline {
 
     stages {
         stage("build-image") {
-            agent any
             steps {
                 sh "docker build -t ${DOCKER_IMAGE_NAME} ."
             }
         }
 
         stage("test-image") {
-            agent any
             steps {
                 sh """
                 docker rm -f protem || true
@@ -30,7 +28,6 @@ pipeline {
         }
         
         stage("release-image") {
-            agent any
             steps {
                 sh """
                 docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
@@ -41,7 +38,6 @@ pipeline {
         }
 
         stage("deploy-app") {
-            agent any
             steps {
                 echo 'Deploy'
                 echo 'Good'
