@@ -84,13 +84,13 @@ The Protem application is a static website designed to showcase technological an
 
 - **Images**: Various images are used throughout the website to enhance visual appeal and convey information effectively.
 - **Sass Stylesheets**: Sass files are utilized for styling, incorporating variables, functions, mixins, and breakpoints for responsive design.
-- *CSS Stylesheets*: The Sass files are compiled into CSS stylesheets for browser rendering.
-- *JavaScript Files*: Client-side JavaScript is used to add interactivity and functionality to the website, such as form validation and navigation.
+- ***CSS Stylesheets***: The Sass files are compiled into CSS stylesheets for browser rendering.
+- ***JavaScript Files***: Client-side JavaScript is used to add interactivity and functionality to the website, such as form validation and navigation.
 
 ### External Dependencies:
 
-1. *Font Awesome*: The `Font Awesome` icon library is imported to use icons throughout the website.
-2. *Google Fonts*: The Source Sans Pro font from `Google Fonts` is imported to enhance typography on the website.
+1. ***Font Awesome***: The `Font Awesome` icon library is imported to use icons throughout the website.
+2. ***Google Fonts***: The Source Sans Pro font from `Google Fonts` is imported to enhance typography on the website.
 
 ### Layout:
 
@@ -107,30 +107,31 @@ The Protem application focuses on providing information about Protem's services 
 
 ## Docker Image Deployment
 
-The Dockerfile in the repository builds both the frontend and backend services. The resulting Docker image is pushed to Docker Hub.
+The Dockerfile in the repository defines the instructions for building the Docker image that will be deployed to Docker Hub. It specifies the environment and dependencies required for running the Protem Web Application.
 
 ## Environment Variables
 
 The following environment variables are required:
 
-#### Predefined CI/CD Variables in GitLab:
+#### Predefined CI/CD Variables in Jenkins:
 
-- ***CI_REGISTRY_PASSWORD***: Password for accessing the GitLab Docker registry.
-- ***CI_COMMIT_REF_SLUG***: Slugified version of the branch or tag name.
+- ***GIT_BRANCH***: This predefined CI/CD variable provides information about the Git branch that triggered the pipeline. This variable contains the name of the Git branch including the full reference (e.g., origin/main, origin/feature/new-feature). It allows you to determine which branch's changes initiated the pipeline execution.
 
-#### Variables Defined in GitLab CI/CD Settings:
+#### Variables Defined in Jenkins credentials:
 
-- ***DOCKER_HUB_USERNAME***: Your Docker Hub username.
-- ***DOCKER_HUB_PASSWORD***: Your Docker Hub password.
-- ***EC2_PRIVATE_KEY***: Private key for accessing your EC2 instance.
-- ***EC2_PUBLIC_IP***: Public IP address of your EC2 instance.
-- ***EC2_USER***: Username for accessing your EC2 instance.
+- ***DOCKER_HUB_USERNAME***: Your Docker Hub username. This credential is used to authenticate with Docker Hub for pushing Docker images.
+- ***DOCKER_HUB_PASSWORD***: Your Docker Hub password. This credential is used in conjunction with the Docker Hub username for authentication.
+- ***EC2_PRIVATE_KEY***: Private key for accessing your EC2 instance. This key is required for securely accessing your EC2 instance via SSH.
+- ***EC2_PUBLIC_IP***: Public IP address of your EC2 instance. This IP address is used to connect to your EC2 instance for deployment.
+- ***EC2_USER***: Username for accessing your EC2 instance. This username is used in conjunction with the private key for SSH access to the EC2 instance.
 
-#### Variables Defined in .gitlab-ci.yml:
+#### Variables Defined in Jenkinsfile:
 
-- ***IMAGE_NAME***: Name of the Docker image.
-- ***IMAGE_TAG***: Tag for the Docker image.
-- ***DOCKER_IMAGE_NAME***: Full name of the Docker image.
+- ***IMAGE_NAME***: Name of the Docker image. This variable defines the name of the Docker image to be built and pushed.
+- ***IMAGE_TAG***: Tag for the Docker image. This variable specifies the tag associated with the Docker image.
+- ***DOCKER_IMAGE_NAME***: Full name of the Docker image. This variable combines the image name and tag to form the full image name for pushing to Docker Hub.
+
+Ensure that all these variables are correctly set up in your Jenkins environment to enable seamless execution of the CI/CD pipeline for your Protem Web Application.
 
 
 ## Contributing
@@ -142,4 +143,4 @@ This project is maintained by Jean-Luc Mpande. You can reach out to the maintain
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE] file for details.
+This project is licensed under the MIT License - see the [LICENSE]() file for details.
