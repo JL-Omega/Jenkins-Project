@@ -2,24 +2,24 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME        = 'protem'
-        IMAGE_TAG         = '1.0.0'
-        DOCKER_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
-        DOCKER_HUB_USERNAME = credentials('docker_hub_usernsme')
-        DOCKER_HUB_PASSWORD = credentials('docker_hub_password')
-        EC2_PUBLIC_IP = credentials('ec2_public_ip')
-        EC2_USER = credentials('ec2_user')
-        EC2_PRIVATE_KEY = credentials('ec2_private_key')
+        IMAGE_NAME           = 'protem'
+        IMAGE_TAG            = '1.0.0'
+        DOCKER_IMAGE_NAME    = "${IMAGE_NAME}:${IMAGE_TAG}"
+        DOCKER_HUB_USERNAME  = credentials('docker_hub_usernsme')
+        DOCKER_HUB_PASSWORD  = credentials('docker_hub_password')
+        EC2_PUBLIC_IP        = credentials('ec2_public_ip')
+        EC2_USER             = credentials('ec2_user')
+        EC2_PRIVATE_KEY      = credentials('ec2_private_key')
     }
 
     stages {
-        stage("build-image") {
+        stage("Build the image") {
             steps {
                 sh "docker build -t ${DOCKER_IMAGE_NAME} ."
             }
         }
 
-        stage("test-image") {
+        stage("Test the image") {
             steps {
                 sh """
                 docker rm -f ${IMAGE_NAME} || true
@@ -30,7 +30,7 @@ pipeline {
             }
         }
         
-        stage("release-image") {
+        stage("Release the image") {
             steps {
                 sh """
                 docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
@@ -40,7 +40,7 @@ pipeline {
             }
         }
 
-        stage("deploy-app") {
+        stage("inslall docker on EC2"){
             steps {
                 sh """
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} curl -fsSL https://get.docker.com -o install-docker.sh
@@ -48,7 +48,13 @@ pipeline {
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} sudo sh install-docker.sh
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} sudo apt-get install -y uidmap
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} dockerd-rootless-setuptool.sh install
-                sleep 10
+                """
+            }
+        }
+
+        stage("Deploy the app to EC2") {
+            steps {
+                sh """
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} docker rm -f ${IMAGE_NAME} || true
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} docker run --name ${IMAGE_NAME} -d -p 8081:80 ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}
                 """
