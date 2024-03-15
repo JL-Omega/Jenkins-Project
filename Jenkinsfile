@@ -46,7 +46,7 @@ pipeline {
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} curl -fsSL https://get.docker.com -o install-docker.sh
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} sh install-docker.sh --dry-run
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} sudo sh install-docker.sh
-                ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USE}R@${EC2_PUBLIC_IP} "sudo sh -eux <<EOF
+                ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} "sudo sh -eux <<EOF
                 apt-get install -y uidmap
                 EOF"
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} dockerd-rootless-setuptool.sh install
