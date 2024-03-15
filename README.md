@@ -143,4 +143,4 @@ This project is maintained by Jean-Luc Mpande. You can reach out to the maintain
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE]() file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/JL-Omega/Jenkins-project/blob/main/LICENSE) file for details.
