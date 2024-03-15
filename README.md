@@ -1,13 +1,13 @@
 # Protem Web Application
 
-This repository contains the source code and Docker configuration for the Protem Web Application. The Protem Application is a comprehensive solution for deploying web projects using Docker containers, featuring a CI/CD pipeline built with GitLab.
+This repository contains the source code and Jenkins configuration for the Protem Web Application. The Protem Application is a comprehensive solution for deploying web projects using Docker containers, featuring a CI/CD pipeline built with Jenkins.
 
 ## Prerequisites
 
 Before you begin, ensure you have the following set up:
 
 - **Docker:** Docker should be installed on your local machine.
-- **GitLab Account:** You need a GitLab account to leverage its CI/CD features.
+- **Jenkins Server:** You need a Jenkins server set up to run the CI/CD pipeline.
 - **Docker Hub Account:** Create a Docker Hub account to store and share Docker images.
 - **Cloud Account (e.g., AWS):** Register for a cloud service provider account like AWS for deploying and hosting your application.
 
@@ -18,13 +18,13 @@ To run the Protem Web Application, follow these steps:
 1. Clone this repository:
 
 ```bash
-git clone https://gitlab.com/devops-projects2461303/gitlab_project/gitlab-project.git
+git clone https://github.com/JL-Omega/Jenkins-project.git
 ``` 
 
 2. Navigate to the cloned directory:
 
 ```bash
-cd gitlab-project
+cd Jenkins-project
 ```
 
 3. Define the following environment variables in your GitLab project's CI/CD settings:
@@ -36,7 +36,28 @@ cd gitlab-project
 - `EC2_PUBLIC_IP`: Public IP address of your EC2 instance.
 - `EC2_USER`: Username for accessing your EC2 instance.
 
-4. Push your changes to the GitLab repository to trigger the CI/CD pipeline. The pipeline will automatically build, test, release, and deploy your application.
+To begin with, ensure that you have configured a webhook between Jenkins and your GitHub repository. This configuration is crucial for automating the execution of the pipeline whenever changes are pushed to the repository.
+
+####Follow these steps to set up the webhook:
+
+- ***Access Jenkins Dashboard***: Log in to your Jenkins dashboard.
+- ***Create a New Item***: Click on "New Item" to create a new pipeline project.
+- ***Configure Pipeline***: In the pipeline configuration, specify the GitHub project URL and define the pipeline script from the repository containing the Jenkinsfile.
+- ***Set Up Webhook***: Go to your GitHub repository settings and navigate to "Webhooks." Add a new webhook with the payload URL pointing to your Jenkins server's webhook URL. Ensure that you select the appropriate events that should trigger the webhook, typically "Push" events.
+
+Once you have configured the webhook, any changes pushed to the GitHub repository will automatically trigger the Jenkins pipeline, streamlining the CI/CD process.
+
+#### Ngrok for Testing (Optional)
+
+If you're working on your local machine and need a public IP address to test webhook functionality, you can use Ngrok. Ngrok provides a secure tunnel to your local server, exposing it to the internet temporarily. Here's how you can use Ngrok:
+
+1. ***Install Ngrok***: Download and install Ngrok from the official website.
+2. ***Expose Jenkins Server***: Start Ngrok and expose the port where Jenkins is running. For example, if Jenkins is running on port 8080, you can expose it using the command: ngrok http 8080.
+3. ***Copy Public URL***: Ngrok will generate a public URL that forwards traffic to your local Jenkins server. Copy this URL and use it as the payload URL when setting up the webhook in your GitHub repository.
+
+By utilizing Ngrok, you can test webhook functionality even when working on a local development environment.
+
+With the webhook configured and Ngrok set up (if needed), you're ready to leverage Jenkins CI/CD capabilities to automate the deployment of your Protem Web Application. Any changes pushed to the repository will automatically trigger the pipeline, ensuring seamless integration and deployment.
 
 
 ## Usage
@@ -47,7 +68,7 @@ The Protem website should display as shown below:
 
 
 This screenshot provides an overview of the Protem website's layout and design, showcasing its various sections.
-![image](/uploads/0ab678302339ff9bdbcabce9b272128f/image.png)
+![image](https://github.com/JL-Omega/Gitlab-CI-CD-Project/assets/96908472/9b6b166d-40c9-403e-9d4d-d9319be6b318)
 
 ## Application Structure
 
