@@ -31,7 +31,7 @@ pipeline {
             agent any
             steps {
                 sh """
-                docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
+                docker login -u credentials('DOCKER_HUB_USERNAME') -p credentials('DOCKER_HUB_PASSWORD')
                 docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}
                 docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}
                  """
