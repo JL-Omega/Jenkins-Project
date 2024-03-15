@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME        = 'protem'
         IMAGE_TAG         = '1.0.0'
-        DOCKER_IMAGE_NAME = ${IMAGE_NAME}:${IMAGE_TAG}
+        DOCKER_IMAGE_NAME =" ${IMAGE_NAME}:${IMAGE_TAG}"
     }
 
     stages {
