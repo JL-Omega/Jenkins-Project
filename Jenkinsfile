@@ -42,11 +42,10 @@ pipeline {
         }
 
         stage("inslall docker on EC2") {
-            steps {
-                when {
+            when {
                     expression { GIT_BRANCH == 'origin/main'}
                 }
-                
+            steps {
                 sh """
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} curl -fsSL https://get.docker.com -o install-docker.sh
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} sh install-docker.sh --dry-run
@@ -58,10 +57,10 @@ pipeline {
         }
 
         stage("Deploy the app to EC2") {
-            steps {
-                when {
+            when {
                     expression { GIT_BRANCH == 'origin/main'}
                 }
+            steps {
                 sh """
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} docker rm -f ${IMAGE_NAME} || true
                 ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} docker run --name ${IMAGE_NAME} -d -p 8081:80 ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}
