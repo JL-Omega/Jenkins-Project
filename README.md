@@ -51,7 +51,7 @@ Once you have configured the webhook, any changes pushed to the GitHub repositor
 
 If you're working on your local machine and need a public IP address to test webhook functionality, you can use Ngrok. Ngrok provides a secure tunnel to your local server, exposing it to the internet temporarily. Here's how you can use Ngrok:
 
-1. ***Install Ngrok***: Download and install Ngrok from the official website : ```bash https://ngrok.com/download ```
+1. ***Install Ngrok***: Download and install Ngrok from the official website : https://ngrok.com/download
 2. ***Expose Jenkins Server***: Start Ngrok and expose the port where Jenkins is running. For example, if Jenkins is running on port 8080, you can expose it using the command: ngrok http 8080.
 3. ***Copy Public URL***: Ngrok will generate a public URL that forwards traffic to your local Jenkins server. Copy this URL and use it as the payload URL when setting up the webhook in your GitHub repository.
 
