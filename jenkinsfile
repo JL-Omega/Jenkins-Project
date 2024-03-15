@@ -32,8 +32,7 @@ pipeline {
         }
 
         stage("deploy-app") {
-            echo 'Deployed'
-            echo 'yes'
+            echo 'Deploy'
         }
     }
 }
