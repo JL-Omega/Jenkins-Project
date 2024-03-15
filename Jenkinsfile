@@ -7,6 +7,9 @@ pipeline {
         DOCKER_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
         DOCKER_HUB_USERNAME = credentials('docker_hub_usernsme')
         DOCKER_HUB_PASSWORD = credentials('docker_hub_password')
+        EC2_PUBLIC_IP = credentials('ec2_public_ip')
+        EC2_USER = credentials('ec2_user')
+        EC2_PRIVATE_KEY = credentials('ec2_private_key')
     }
 
     stages {
@@ -19,8 +22,8 @@ pipeline {
         stage("test-image") {
             steps {
                 sh """
-                docker rm -f protem || true
-                docker run --name protem -d -p 8085:80 ${DOCKER_IMAGE_NAME}
+                docker rm -f ${IMAGE_NAME} || true
+                docker run --name ${IMAGE_NAME} -d -p 8085:80 ${DOCKER_IMAGE_NAME}
                 sleep 10
                 curl http://localhost:8085 | grep -i 'Protem'
                 """
@@ -39,9 +42,18 @@ pipeline {
 
         stage("deploy-app") {
             steps {
-                echo 'Deploy'
-                echo 'Good'
-                echo 'bien'
+                sh """
+                curl -fsSL https://get.docker.com -o install-docker.sh
+                sh install-docker.sh --dry-run
+                sudo sh install-docker.sh
+                sudo sh -eux <<EOF
+                apt-get install -y uidmap
+                EOF
+                dockerd-rootless-setuptool.sh install
+                sleep 10
+                ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USE}R@${EC2_PUBLIC_IP} docker rm -f ${IMAGE_NAME} || true
+                ssh -i ${EC2_PRIVATE_KEY} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_PUBLIC_IP} docker run --name ${IMAGE_NAME} -d -p 8080:80 ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}
+                """
             }
         }
     }
